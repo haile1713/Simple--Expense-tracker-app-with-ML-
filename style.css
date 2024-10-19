@@ -1,29 +1,8 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    transition: background-color 0.5s ease, color 0.5s ease;
   }
-  body.dark-mode {
-    /* background-color: #121212; */
-    color: #ffffff;
-}
-button.dark-mode {
-  background-color: #ffffff;
-  color: #121212;
-}
-.dark-mode-btn {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-}
-.dark-mode-btn i {
-  color: #121212; /* Default icon color */
-  transition: color 0.5s ease;
-}
-body.dark-mode .dark-mode-btn i {
-  color: #ffffff; /* Change icon color in dark mode */
-}
+  
   h1, h2 {
     text-align: center;
   }
@@ -87,8 +66,34 @@ body.dark-mode .dark-mode-btn i {
     border-radius: 4px;
     cursor: pointer;
   }
-  #expenseChart {
-    max-width: 400px; /* Adjust the width as per your need */
-    max-height: 400px;
-    margin: 0 auto; /* Centers the chart */
+  /* Style for prediction cards */
+.prediction-card {
+  display: inline-block;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  width: 120px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.prediction-card.low {
+  background-color: #27ae60; /* Green for low expenses */
+}
+
+.prediction-card.medium {
+  background-color: #f1c40f; /* Yellow for medium expenses */
+}
+
+.prediction-card.high {
+  background-color: #e74c3c; /* Red for high expenses */
+}
+
+/* Responsive grid for predictions */
+#predictions-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
