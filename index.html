@@ -4,11 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="style.css">
     <title>Expense Tracker App</title>
 </head>
 <body>
     <h1>Expense Tracker App</h1>
+    <button id="dark-mode-toggle" class="dark-mode-btn">
+        <i class="fas fa-moon"></i> <!-- This is the moon icon -->
+    </button>
+    
+
     <div class="input-section">
         <label for="category-select">Category:</label>
         <select id="category-select">
@@ -23,6 +30,7 @@
         <input type="date" id="date-input">
         <button id="add-btn">Add</button>
     </div>
+    
     <div class="expenses-list">
         <h2>Expenses List</h2>
         <table>
@@ -34,9 +42,7 @@
                     <th>Delete</th>
                 </tr>
             </thead>
-            <tbody id="expnese-table-body">
-
-            </tbody>
+            <tbody id="expnese-table-body"></tbody>
             <tfoot>
                 <tr>
                     <td>Total:</td>
@@ -47,6 +53,12 @@
             </tfoot>
         </table>
     </div>
+
+    <!-- Pie Chart Canvas -->
+    <h2>Expense Distribution</h2>
+    <canvas id="expenseChart"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
