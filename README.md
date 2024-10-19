@@ -43,7 +43,7 @@ This app can be useful in various scenarios, such as:
 1. Clone the repository:
 
     \`\`\`bash
-    git clone https://github.com/yourusername/expense-tracker-app.git
+    git clone https://github.com/haile1713/Simple--Expense-tracker-app.git
     \`\`\`
 
 2. Navigate into the project directory:
