@@ -1,2 +1,2 @@
 # Simple--Expense-tracker-app
-A feature-rich expense tracker app that allows users to log, categorize, and track expenses. Customize it with AI/ML for project expense predictions and personalized financial insights, enhancing the app's efficiency for both personal and business use.
+An interactive expense tracker web app that allows users to log and categorize expenses. Features include input validation, an expense list with a total calculation, and the ability to delete entries. The app is fully responsive, providing a seamless experience across all devices.
