@@ -13,7 +13,8 @@ color-coded cards.
   - **Yellow**: Medium expenses
   - **Red**: High expenses
 - **Responsive Design**: Works on both desktop and mobile devices.
-##screen shoots
+  
+## screen shoots
 
 ![image](https://github.com/user-attachments/assets/c7809b20-3ba4-44db-9e65-9273ae3180d6)
 
