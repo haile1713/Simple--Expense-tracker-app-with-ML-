@@ -1,99 +1,102 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-  }
-  
-  h1, h2 {
-    text-align: center;
-  }
-  
-  .input-section {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-  }
-  
-  .input-section label {
-    font-weight: bold;
-    margin-right: 10px;
-  }
-  
-  .input-section input[type="number"], .input-section input[type="date"] {
-    padding: 5px;
-    margin-right: 10px;
-  }
-  
-  .input-section button {
-    padding: 5px 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .expenses-list {
-    margin: 20px;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  th {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  tfoot td {
-    font-weight: bold;
-  }
-  
-  .delete-btn {
-    padding: 5px 10px;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  /* Style for prediction cards */
+	font-family: Arial, sans-serif;
+	margin: 0;
+}
+
+h1,
+h2 {
+	text-align: center;
+}
+
+.input-section {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
+}
+
+.input-section label {
+	font-weight: bold;
+	margin-right: 10px;
+}
+
+.input-section input[type="number"],
+.input-section input[type="date"] {
+	padding: 5px;
+	margin-right: 10px;
+}
+
+.input-section button {
+	padding: 5px 10px;
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.expenses-list {
+	margin: 20px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th,
+td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+}
+
+th {
+	background-color: #4caf50;
+	color: white;
+}
+
+tfoot td {
+	font-weight: bold;
+}
+
+.delete-btn {
+	padding: 5px 10px;
+	background-color: #f44336;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+/* Style for prediction cards */
 .prediction-card {
-  display: inline-block;
-  background-color: #2c3e50;
-  color: #ecf0f1;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 10px;
-  text-align: center;
-  width: 120px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	display: inline-block;
+	background-color: #2c3e50;
+	color: #ecf0f1;
+	border-radius: 10px;
+	padding: 10px;
+	margin: 10px;
+	text-align: center;
+	width: 120px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .prediction-card.low {
-  background-color: #27ae60; /* Green for low expenses */
+	background-color: #27ae60; /* Green for low expenses */
 }
 
 .prediction-card.medium {
-  background-color: #f1c40f; /* Yellow for medium expenses */
+	background-color: #f1c40f; /* Yellow for medium expenses */
 }
 
 .prediction-card.high {
-  background-color: #e74c3c; /* Red for high expenses */
+	background-color: #e74c3c; /* Red for high expenses */
 }
 
 /* Responsive grid for predictions */
 #predictions-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
