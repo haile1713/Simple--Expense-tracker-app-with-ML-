@@ -38,7 +38,7 @@ This app can be useful in various scenarios, such as:
 - **TensorFlow.js**: Implements the machine learning model directly in the browser.
 - **Flexbox**: Used to create a responsive, flexible layout for the predictions section.
 - **Optional**: **Chart.js** for expense visualization (if integrated).
-##Live Demo
+## Live Demo
 https://expense-tracker-ruddy-pi.vercel.app/
 
 ## Installation
