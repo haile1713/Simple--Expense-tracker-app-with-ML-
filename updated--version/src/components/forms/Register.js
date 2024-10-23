@@ -8,6 +8,10 @@ class Register extends Component {
 		fireErrors: "",
 	};
 
+    handleChange = e => {
+        this.setState({[e.target.name]: e.target.value});
+    }
+
 	render() {
 		return (
 			<>
@@ -16,9 +20,9 @@ class Register extends Component {
 						type="text"
 						className="regField"
 						placeholder="Your name"
-						value={this.state.email}
+						value={this.state.displayName}
 						onChange={this.handleChange}
-						name="name"
+						name="displayName"
 					/>
                     <input
 						type="text"
@@ -41,7 +45,7 @@ class Register extends Component {
 						className="submitBtn"
 						type="submit"
 						onClick={this.login}
-						value="ENTER"
+						value="REGISTER"
 					/>
 				</form>
 			</>
