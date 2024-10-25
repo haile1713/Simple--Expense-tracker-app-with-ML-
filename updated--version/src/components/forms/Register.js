@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { auth, createUserWithEmailAndPassword, updateProfile } from '../../config/Fire';
-// import './Reg.css';
-import './Login.css'
+import './Login.css';
 
 class Register extends Component {
     state = {
