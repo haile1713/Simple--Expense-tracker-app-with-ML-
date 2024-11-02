@@ -1,70 +1,102 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Expense Tracker App
 
-## Available Scripts
+A simple and intuitive Expense Tracker application built with **React** and **Firebase** that allows users to add, view, and delete transactions. The app features an integrated **Machine Learning** model using **TensorFlow.js** to predict future expenses based on past spending habits.
 
-In the project directory, you can run:
+## Features
+- **User Authentication**: Sign in and sign out functionality using Firebase authentication.
+- **Add Transactions**: Users can add deposits and expenses with a transaction name, type, and amount.
+- **Transaction History**: View the latest transactions in an organized list.
+- **Machine Learning Predictions**: Predicts expenses for the next 14 days using a trained Linear Regression model.
+- **Data Storage**: Transactions are saved in Firebase Realtime Database.
+- **Expense Visualization**: Displays future expense predictions in a color-coded format to easily identify low, medium, and high expenses.
 
-### `npm start`
+## Technologies Used
+- **React**: Front-end library for building user interfaces.
+- **Firebase**: Authentication and Realtime Database for user management and data storage.
+- **TensorFlow.js**: JavaScript library for training and running Machine Learning models in the browser.
+- **CSS**: For styling the app.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Getting Started
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Prerequisites
+- Node.js and npm installed on your computer.
 
-### `npm test`
+### Installation
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/haile1713/Simple--Expense-tracker-app-with-ML-.git
+   ```
+2. **Navigate to the Project Directory**:
+   ```bash
+   cd expense-tracker-app
+   cd updated--version
+   ```
+3. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+4. **Start the App**:
+   ```bash
+   npm start
+   ```
+   This will run the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Firebase Setup
+1. Create a Firebase project at [Firebase Console](https://console.firebase.google.com/).
+2. Enable **Authentication** and **Realtime Database**.
+3. Add your Firebase configuration to `src/config/Fire.js`:
+   ```javascript
+   import { initializeApp } from "firebase/app";
+   import { getAuth } from "firebase/auth";
+   import { getDatabase } from "firebase/database";
 
-### `npm run build`
+   const firebaseConfig = {
+     apiKey: "YOUR_API_KEY",
+     authDomain: "YOUR_AUTH_DOMAIN",
+     projectId: "YOUR_PROJECT_ID",
+     storageBucket: "YOUR_STORAGE_BUCKET",
+     messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+     appId: "YOUR_APP_ID",
+     databaseURL: "YOUR_DATABASE_URL"
+   };
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   const app = initializeApp(firebaseConfig);
+   const auth = getAuth(app);
+   const database = getDatabase(app);
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   export { auth, database };
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
+1. **Sign In/Sign Up**: Use the authentication feature to log in or create a new account.
+2. **Add Transactions**: Enter the transaction name, select the type (expense or deposit), and specify the amount.
+3. **View Predictions**: Check the color-coded expense predictions for the next 14 days to manage your budget efficiently.
 
-### `npm run eject`
+## Expense Prediction
+- The app uses a **Linear Regression** model to predict future expenses. The model is trained using **TensorFlow.js** based on the user's past expense data.
+- **Color Coding**:
+  - **Green (Low)**: Expenses below $20.
+  - **Yellow (Medium)**: Expenses between $20 and $50.
+  - **Red (High)**: Expenses above $50.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Screenshots
+![Screenshot 2024-11-02 125403](https://github.com/user-attachments/assets/efae2d58-1db6-4b66-a673-46ab4eec28b7)
+![Screenshot 2024-11-02 125416](https://github.com/user-attachments/assets/20d95c04-36ba-4003-a36c-1c5f29337339)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Live Demo
+https://expense-tracker-update-pi.vercel.app/
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Future Enhancements
+- **Graphical Visualization**: Add charts to better visualize expense trends.
+- **Advanced Models**: Use more sophisticated machine learning models for improved accuracy.
+- **Budget Management**: Introduce features to set and track budgets for different categories.
 
-## Learn More
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Contact
+For any inquiries or feedback, feel free to reach out to:
+- **Haileleul F. Mezgebe**: [haileleulfiseha@gmail.com](mailto:haileleulfiseha@gmail.com)
+- **GitHub**: [https://github.com/haile1713](https://github.com/haile1713)
