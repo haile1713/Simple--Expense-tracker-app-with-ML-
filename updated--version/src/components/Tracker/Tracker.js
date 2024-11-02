@@ -4,6 +4,7 @@ import "./Tracker.css";
 import { getDatabase, ref, push, get } from "firebase/database";
 import { type } from "@testing-library/user-event/dist/type";
 import Transaction from "./Transaction/Transaction";
+import { trainModel, predictExpense } from "../../ExpensePrediction";
 const database = getDatabase();
 
 class Tracker extends Component {
@@ -32,7 +33,6 @@ class Tracker extends Component {
 		const { transactionName, transactionType, price, currentUID, money } =
 			this.state;
 
-		// Validation of transaction
 		if (transactionName && transactionType && price) {
 			const BackUpState = this.state.transaction;
 			BackUpState.push({
@@ -43,7 +43,6 @@ class Tracker extends Component {
 				user_id: currentUID,
 			});
 
-			//  Firebase database methods
 			const transactionRef = ref(database, "Transaction/" + currentUID);
 			push(transactionRef, {
 				id: BackUpState.length,
@@ -53,31 +52,32 @@ class Tracker extends Component {
 				user_id: currentUID,
 			})
 				.then(() => {
-					// Success of transaction
-					console.log("success");
-					this.setState({
-						transaction: BackUpState,
-						money:
-							transactionType === "deposit"
-								? money + parseFloat(price)
-								: money - parseFloat(price),
-						transactionName: "",
-						transactionType: "",
-						price: "",
-					});
+					console.log("Transaction added successfully");
+					this.setState(
+						{
+							transaction: BackUpState,
+							money:
+								transactionType === "deposit"
+									? money + parseFloat(price)
+									: money - parseFloat(price),
+							transactionName: "",
+							transactionType: "",
+							price: "",
+						},
+						() => this.trainAndPredict() // Retrain the model and predict after state update
+					);
 				})
 				.catch((error) => {
-					// Error handling
 					console.error("Error:", error);
 				});
 		}
 	};
+
 	componentDidMount() {
 		const { currentUID } = this.state;
 		let totalMoney = 0;
-		const BackUpState = []; // Reset BackUpState to an empty array
+		const BackUpState = [];
 
-		//  `database` instance from the modular SDK
 		const transactionRef = ref(database, "Transaction/" + currentUID);
 		get(transactionRef)
 			.then((snapshot) => {
@@ -97,10 +97,13 @@ class Tracker extends Component {
 						});
 					});
 
-					this.setState({
-						transaction: BackUpState, //  non-duplicated transactions
-						money: totalMoney,
-					});
+					this.setState(
+						{
+							transaction: BackUpState,
+							money: totalMoney,
+						},
+						() => this.trainAndPredict() // Train the model after setting the state
+					);
 				}
 			})
 			.catch((error) => {
@@ -108,12 +111,44 @@ class Tracker extends Component {
 			});
 	}
 
+	// Function to train the model and predict the expense
+	trainAndPredict = async () => {
+		const { transaction, numExpenses, futureDays } = this.state;
+		const expenses = transaction
+			.slice(0, numExpenses)
+			.map((t) => parseFloat(t.price)); // Convert prices to numbers
+
+		if (expenses.length >= 2) {
+			const model = await trainModel(expenses, numExpenses);
+			const predictions = [];
+
+			for (let day = 1; day <= futureDays; day++) {
+				const prediction = await predictExpense(model, day);
+				predictions.push({ day, expense: prediction });
+			}
+
+			this.setState({ predictedExpenses: predictions });
+		}
+	};
+
+	state = {
+		transaction: [],
+		money: 0,
+		transactionName: "",
+		transactionType: "",
+		price: "",
+		currentUID: auth.currentUser ? auth.currentUser.uid : null,
+		predictedExpenses: [], // New state for multiple day predictions
+		numExpenses: 2, // Number of initial expenses to use for training
+		futureDays: 14, // Two weeks (14 days) prediction
+	};
+
 	render() {
 		var currentUser = auth.currentUser;
 		return (
 			<div className="trackerBlock">
 				<div className="welcome">
-					<span>Hi,{currentUser.displayName}!</span>
+					<span>Hi, {currentUser.displayName}!</span>
 					<button className="exit" onClick={this.logout}>
 						Exit
 					</button>
@@ -163,13 +198,34 @@ class Tracker extends Component {
 					<ul>
 						{this.state.transaction.map((transaction, id) => (
 							<Transaction
-								key={id} // unique key for each component
+								key={id}
 								type={transaction.type}
 								name={transaction.name}
 								price={transaction.price}
 							/>
 						))}
 					</ul>
+				</div>
+				<div className="predictedExpenseList">
+					{this.state.predictedExpenses.map((prediction) => {
+						let expenseClass = "low"; // Default to low
+
+						if (prediction.expense >= 20 && prediction.expense <= 50) {
+							expenseClass = "medium";
+						} else if (prediction.expense > 50) {
+							expenseClass = "high";
+						}
+
+						return (
+							<div
+								key={prediction.day}
+								className={`expenseCard ${expenseClass}`}
+							>
+								<p>Day {prediction.day}</p>
+								<p>${prediction.expense.toFixed(2)}</p>
+							</div>
+						);
+					})}
 				</div>
 			</div>
 		);

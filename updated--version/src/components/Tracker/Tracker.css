@@ -122,3 +122,36 @@ ul li:last-child {
 .deposit {
 	color: green;
 }
+.predictedExpenses {
+	margin-top: 20px;
+	color: #fff;
+  }
+  
+  .predictedExpenseList {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr); /* 7 columns for 14 items over two rows */
+	gap: 10px;
+	margin-top: 20px;
+  }
+  
+  .expenseCard {
+	padding: 10px;
+	border-radius: 5px;
+	text-align: center;
+	color: white; /* White text */
+	font-weight: bold;
+  }
+  
+  .expenseCard.low {
+	background-color: #4caf50; /* Green for low expenses */
+  }
+  
+  .expenseCard.medium {
+	background-color: #ffeb3b; /* Yellow for medium expenses */
+	color: #000; /* Black text for better contrast */
+  }
+  
+  .expenseCard.high {
+	background-color: #f44336; /* Red for high expenses */
+  }
+  
