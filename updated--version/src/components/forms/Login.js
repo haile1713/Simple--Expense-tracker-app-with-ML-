@@ -11,7 +11,7 @@ class Login extends Component {
 
 	login = (e) => {
 		e.preventDefault();
-		// Call signInWithEmailAndPassword correctly
+		// Call signInWithEmailAndPassword 
 		signInWithEmailAndPassword(
 			auth,
 			this.state.email,

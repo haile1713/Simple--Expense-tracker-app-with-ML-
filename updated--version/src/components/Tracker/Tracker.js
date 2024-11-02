@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { auth } from "../../config/Fire";
 import "./Tracker.css";
-import { getDatabase, ref, push } from "firebase/database";
+import { getDatabase, ref, push, get } from "firebase/database";
 import { type } from "@testing-library/user-event/dist/type";
 import Transaction from "./Transaction/Transaction";
 const database = getDatabase();
@@ -43,7 +43,7 @@ class Tracker extends Component {
 				user_id: currentUID,
 			});
 
-			// Use Firebase database methods
+			//  Firebase database methods
 			const transactionRef = ref(database, "Transaction/" + currentUID);
 			push(transactionRef, {
 				id: BackUpState.length,
@@ -72,6 +72,41 @@ class Tracker extends Component {
 				});
 		}
 	};
+	componentDidMount() {
+		const { currentUID } = this.state;
+		let totalMoney = 0;
+		const BackUpState = []; // Reset BackUpState to an empty array
+
+		//  `database` instance from the modular SDK
+		const transactionRef = ref(database, "Transaction/" + currentUID);
+		get(transactionRef)
+			.then((snapshot) => {
+				if (snapshot.exists()) {
+					snapshot.forEach((childSnapshot) => {
+						totalMoney =
+							childSnapshot.val().type === "deposit"
+								? parseFloat(childSnapshot.val().price) + totalMoney
+								: totalMoney - parseFloat(childSnapshot.val().price);
+
+						BackUpState.push({
+							id: childSnapshot.val().id,
+							name: childSnapshot.val().name,
+							type: childSnapshot.val().type,
+							price: childSnapshot.val().price,
+							user_id: childSnapshot.val().user_id,
+						});
+					});
+
+					this.setState({
+						transaction: BackUpState, //  non-duplicated transactions
+						money: totalMoney,
+					});
+				}
+			})
+			.catch((error) => {
+				console.error("Error fetching transactions:", error);
+			});
+	}
 
 	render() {
 		var currentUser = auth.currentUser;
@@ -128,7 +163,7 @@ class Tracker extends Component {
 					<ul>
 						{this.state.transaction.map((transaction, id) => (
 							<Transaction
-								key={id} // Make sure to add a unique key for each component
+								key={id} // unique key for each component
 								type={transaction.type}
 								name={transaction.name}
 								price={transaction.price}
