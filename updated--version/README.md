@@ -85,7 +85,7 @@ A simple and intuitive Expense Tracker application built with **React** and **Fi
 ![Screenshot 2024-11-02 125416](https://github.com/user-attachments/assets/20d95c04-36ba-4003-a36c-1c5f29337339)
 
 ## Live Demo
-
+https://expense-tracker-update-pi.vercel.app/
 
 
 ## Future Enhancements
