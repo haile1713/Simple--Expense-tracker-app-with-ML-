@@ -5,7 +5,6 @@ import Login from "./forms/Login";
 import Register from "./forms/Register";
 import Tracker from "./Tracker/Tracker";
 import Spinner from "../assets/loader (1).gif";
-
 export default class Main extends Component {
 	state = {
 		user: 1,
@@ -78,10 +77,7 @@ export default class Main extends Component {
 						)}
 					</div>
 				) : (
-					<div>
-						<Tracker />
-					</div>
-					
+					<Tracker />
 				)}
 			</>
 		);

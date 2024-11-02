@@ -124,34 +124,66 @@ ul li:last-child {
 }
 .predictedExpenses {
 	margin-top: 20px;
-	color: #fff;
-  }
-  
-  .predictedExpenseList {
-	display: grid;
-	grid-template-columns: repeat(7, 1fr); /* 7 columns for 14 items over two rows */
-	gap: 10px;
-	margin-top: 20px;
-  }
-  
-  .expenseCard {
-	padding: 10px;
-	border-radius: 5px;
 	text-align: center;
-	color: white; /* White text */
+  }
+  
+  .predictedExpenses p {
+	font-size: 1.2em;
 	font-weight: bold;
+	margin-bottom: 10px;
   }
   
-  .expenseCard.low {
-	background-color: #4caf50; /* Green for low expenses */
+  .prediction-container {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr); /* 4 columns of equal width */
+	gap: 20px; /* Space between cards */
+	max-width: 1000px; /* Adjust width as needed */
+	margin: 0 auto; /* Center the container */
   }
   
-  .expenseCard.medium {
-	background-color: #ffeb3b; /* Yellow for medium expenses */
-	color: #000; /* Black text for better contrast */
+  .prediction-card {
+	padding: 15px;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	font-size: 1em;
+	font-weight: bold;
+	color: #fff;
+	background-color: #dc3545; /* Red background for the cards */
+	transition: transform 0.2s;
+	text-align: center;
   }
   
-  .expenseCard.high {
-	background-color: #f44336; /* Red for high expenses */
+  .prediction-card:hover {
+	transform: scale(1.05);
+  }
+  
+  
+  
+  .prediction-card.low {
+	background-color: #28a745; /* Green */
+  }
+  
+  .prediction-card.medium {
+	background-color: #ffc107; /* Yellow */
+	color: #000;
+  }
+  
+  .prediction-card.high {
+	background-color: #dc3545; /* Red */
+  }
+  
+  .prediction-card:hover {
+	transform: scale(1.05);
+  }
+  @media (max-width: 768px) {
+	.prediction-card {
+	  flex: 0 1 calc(50% - 20px); /* Adjust to 2 cards per row */
+	}
+  }
+  
+  @media (max-width: 480px) {
+	.prediction-card {
+	  flex: 0 1 calc(100% - 20px); /* 1 card per row */
+	}
   }
   

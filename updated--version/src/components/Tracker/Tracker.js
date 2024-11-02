@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { auth } from "../../config/Fire";
 import "./Tracker.css";
 import { getDatabase, ref, push, get } from "firebase/database";
-import { type } from "@testing-library/user-event/dist/type";
 import Transaction from "./Transaction/Transaction";
-import { trainModel, predictExpense } from "../../ExpensePrediction";
+import { trainModel, predictFutureExpenses } from "../../ML/ExpensePrediction"; // Import ML functions
+
 const database = getDatabase();
 
 class Tracker extends Component {
@@ -15,9 +15,10 @@ class Tracker extends Component {
 		transactionType: "",
 		price: "",
 		currentUID: auth.currentUser ? auth.currentUser.uid : null,
+		predictedExpenses: [], // State for predicted expenses
 	};
-	//logout
 
+	//logout
 	logout = () => {
 		auth.signOut();
 	};
@@ -33,6 +34,7 @@ class Tracker extends Component {
 		const { transactionName, transactionType, price, currentUID, money } =
 			this.state;
 
+		// Validation of transaction
 		if (transactionName && transactionType && price) {
 			const BackUpState = this.state.transaction;
 			BackUpState.push({
@@ -43,6 +45,7 @@ class Tracker extends Component {
 				user_id: currentUID,
 			});
 
+			// Firebase database methods
 			const transactionRef = ref(database, "Transaction/" + currentUID);
 			push(transactionRef, {
 				id: BackUpState.length,
@@ -52,7 +55,8 @@ class Tracker extends Component {
 				user_id: currentUID,
 			})
 				.then(() => {
-					console.log("Transaction added successfully");
+					// Success of transaction
+					console.log("success");
 					this.setState(
 						{
 							transaction: BackUpState,
@@ -64,10 +68,13 @@ class Tracker extends Component {
 							transactionType: "",
 							price: "",
 						},
-						() => this.trainAndPredict() // Retrain the model and predict after state update
+						() => {
+							this.trainModel(); // Train the model after updating state
+						}
 					);
 				})
 				.catch((error) => {
+					// Error handling
 					console.error("Error:", error);
 				});
 		}
@@ -76,8 +83,9 @@ class Tracker extends Component {
 	componentDidMount() {
 		const { currentUID } = this.state;
 		let totalMoney = 0;
-		const BackUpState = [];
+		const BackUpState = []; // Reset BackUpState to an empty array
 
+		// `database` instance from the modular SDK
 		const transactionRef = ref(database, "Transaction/" + currentUID);
 		get(transactionRef)
 			.then((snapshot) => {
@@ -99,10 +107,12 @@ class Tracker extends Component {
 
 					this.setState(
 						{
-							transaction: BackUpState,
+							transaction: BackUpState, // Non-duplicated transactions
 							money: totalMoney,
 						},
-						() => this.trainAndPredict() // Train the model after setting the state
+						() => {
+							this.trainModel(); // Train the model on component mount
+						}
 					);
 				}
 			})
@@ -111,36 +121,31 @@ class Tracker extends Component {
 			});
 	}
 
-	// Function to train the model and predict the expense
-	trainAndPredict = async () => {
-		const { transaction, numExpenses, futureDays } = this.state;
+	// Train the model using imported function
+	trainModel = async () => {
+		const { transaction } = this.state;
 		const expenses = transaction
-			.slice(0, numExpenses)
-			.map((t) => parseFloat(t.price)); // Convert prices to numbers
+			.filter((t) => t.type === "expense")
+			.map((t) => parseFloat(t.price));
 
-		if (expenses.length >= 2) {
-			const model = await trainModel(expenses, numExpenses);
-			const predictions = [];
-
-			for (let day = 1; day <= futureDays; day++) {
-				const prediction = await predictExpense(model, day);
-				predictions.push({ day, expense: prediction });
-			}
-
-			this.setState({ predictedExpenses: predictions });
+		if (expenses.length < 2) {
+			console.log("Not enough data to train the model.");
+			return;
 		}
-	};
 
-	state = {
-		transaction: [],
-		money: 0,
-		transactionName: "",
-		transactionType: "",
-		price: "",
-		currentUID: auth.currentUser ? auth.currentUser.uid : null,
-		predictedExpenses: [], // New state for multiple day predictions
-		numExpenses: 2, // Number of initial expenses to use for training
-		futureDays: 14, // Two weeks (14 days) prediction
+		const model = await trainModel(expenses); // Use trainModel from ExpensePrediction.js
+		if (model) {
+			const futureExpenses = await predictFutureExpenses(
+				model,
+				14,
+				transaction.length
+			); // Predict for 14 days
+			this.setState({
+				predictedExpenses: futureExpenses.map((amount) =>
+					amount.toFixed(2)
+				),
+			});
+		}
 	};
 
 	render() {
@@ -198,7 +203,7 @@ class Tracker extends Component {
 					<ul>
 						{this.state.transaction.map((transaction, id) => (
 							<Transaction
-								key={id}
+								key={id} // Unique key for each component
 								type={transaction.type}
 								name={transaction.name}
 								price={transaction.price}
@@ -206,29 +211,33 @@ class Tracker extends Component {
 						))}
 					</ul>
 				</div>
-				<div className="predictedExpenseList">
-					{this.state.predictedExpenses.map((prediction) => {
-						let expenseClass = "low"; // Default to low
+				{/* Display predicted expenses */}
+				<div className="predictedExpenses">
+					<p>Predicted Expenses for the Next 14 Days:</p>
+					<div className="prediction-container">
+						{this.state.predictedExpenses.map((expense, index) => {
+							let expenseClass = "low";
+							if (expense >= 50 && expense <= 100) {
+								expenseClass = "medium";
+							} else if (expense > 100) {
+								expenseClass = "high";
+							}
 
-						if (prediction.expense >= 20 && prediction.expense <= 50) {
-							expenseClass = "medium";
-						} else if (prediction.expense > 50) {
-							expenseClass = "high";
-						}
-
-						return (
-							<div
-								key={prediction.day}
-								className={`expenseCard ${expenseClass}`}
-							>
-								<p>Day {prediction.day}</p>
-								<p>${prediction.expense.toFixed(2)}</p>
-							</div>
-						);
-					})}
+							return (
+								<div
+									key={index}
+									className={`prediction-card ${expenseClass}`}
+								>
+									<p>Day {index + 1}</p>
+									<p>${expense}</p>
+								</div>
+							);
+						})}
+					</div>
 				</div>
 			</div>
 		);
 	}
 }
+
 export default Tracker;
