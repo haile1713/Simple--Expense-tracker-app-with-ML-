@@ -114,3 +114,11 @@ ul li:last-child {
 .exit:hover {
 	background-color: #f1f1f1;
 }
+
+.expense {
+	color: red;
+}
+
+.deposit {
+	color: green;
+}

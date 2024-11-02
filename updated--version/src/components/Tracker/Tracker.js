@@ -3,7 +3,9 @@ import { auth } from "../../config/Fire";
 import "./Tracker.css";
 import { getDatabase, ref, push } from "firebase/database";
 import { type } from "@testing-library/user-event/dist/type";
+import Transaction from "./Transaction/Transaction";
 const database = getDatabase();
+
 class Tracker extends Component {
 	state = {
 		transaction: [],
@@ -24,53 +26,52 @@ class Tracker extends Component {
 			[input]: e.target.value !== "0" ? e.target.value : "",
 		});
 	};
-    
 
 	//add transaction
-    addNewTransaction = () => {
-        const { transactionName, transactionType, price, currentUID, money } =
-          this.state;
-      
-        // Validation of transaction
-        if (transactionName && transactionType && price) {
-          const BackUpState = this.state.transaction;
-          BackUpState.push({
-            id: BackUpState.length + 1,
-            name: transactionName,
-            type: transactionType,
-            price: price,
-            user_id: currentUID,
-          });
-      
-          // Use Firebase database methods
-          const transactionRef = ref(database, "Transaction/" + currentUID);
-          push(transactionRef, {
-            id: BackUpState.length,
-            name: transactionName,
-            type: transactionType,
-            price: price,
-            user_id: currentUID,
-          })
-            .then(() => {
-              // Success of transaction
-              console.log("success");
-              this.setState({
-                transaction: BackUpState,
-                money:
-                  transactionType === "deposit"
-                    ? money + parseFloat(price)
-                    : money - parseFloat(price),
-                transactionName: "",
-                transactionType: "",
-                price: "",
-              });
-            })
-            .catch((error) => {
-              // Error handling
-              console.error("Error:", error);
-            });
-        }
-      };
+	addNewTransaction = () => {
+		const { transactionName, transactionType, price, currentUID, money } =
+			this.state;
+
+		// Validation of transaction
+		if (transactionName && transactionType && price) {
+			const BackUpState = this.state.transaction;
+			BackUpState.push({
+				id: BackUpState.length + 1,
+				name: transactionName,
+				type: transactionType,
+				price: price,
+				user_id: currentUID,
+			});
+
+			// Use Firebase database methods
+			const transactionRef = ref(database, "Transaction/" + currentUID);
+			push(transactionRef, {
+				id: BackUpState.length,
+				name: transactionName,
+				type: transactionType,
+				price: price,
+				user_id: currentUID,
+			})
+				.then(() => {
+					// Success of transaction
+					console.log("success");
+					this.setState({
+						transaction: BackUpState,
+						money:
+							transactionType === "deposit"
+								? money + parseFloat(price)
+								: money - parseFloat(price),
+						transactionName: "",
+						transactionType: "",
+						price: "",
+					});
+				})
+				.catch((error) => {
+					// Error handling
+					console.error("Error:", error);
+				});
+		}
+	};
 
 	render() {
 		var currentUser = auth.currentUser;
@@ -83,7 +84,7 @@ class Tracker extends Component {
 					</button>
 				</div>
 				<div className="totalMoney">
-					$145
+					${this.state.money}
 					<div className="newTransactionBlock">
 						<div className="newTransaction">
 							<form>
@@ -124,12 +125,15 @@ class Tracker extends Component {
 				</div>
 				<div className="latestTransactions">
 					<p>Latest Transactions</p>
-
 					<ul>
-						<li>
-							<div>ATM Deposit</div>
-							<div>$5</div>
-						</li>
+						{this.state.transaction.map((transaction, id) => (
+							<Transaction
+								key={id} // Make sure to add a unique key for each component
+								type={transaction.type}
+								name={transaction.name}
+								price={transaction.price}
+							/>
+						))}
 					</ul>
 				</div>
 			</div>
