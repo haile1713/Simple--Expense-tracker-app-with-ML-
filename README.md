@@ -20,6 +20,9 @@ color-coded cards.
 
 ![image](https://github.com/user-attachments/assets/cbb14c67-597c-431a-98f7-5e48b037c5fa)
 
+## Updated App
+![Screenshot 2024-11-02 125403](https://github.com/user-attachments/assets/22a93365-aef1-4908-94ba-2204f48f491c)
+![Screenshot 2024-11-02 125416](https://github.com/user-attachments/assets/d685047d-74f3-4fa2-b446-28d3eb25d1a5)
 
 ## Real-Life Applications
 
