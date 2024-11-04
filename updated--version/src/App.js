@@ -5,7 +5,7 @@ function App() {
 		<div>
 			<h1>Hello!</h1>
 			<h2>Manage your finances effortlessly! 💸 </h2>
-			<Main />;
+			<Main />
 		</div>
 	);
 }
